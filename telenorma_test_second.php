@@ -26,9 +26,7 @@ if ($mysqli->connect_error) {
     die("Ошибка подключения: " . $mysqli->connect_error);
 }
 
-// SQL-запрос для получения данных
 $query = "
-    
             SELECT
                 g.name AS product_name,
                 af1.name AS field1_name,
@@ -77,7 +75,6 @@ if ($result) {
 
 echo '</table>';
 
-// Закрытие соединения
 $mysqli->close();
 
 ?>
