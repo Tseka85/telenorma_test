@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+    php:
+        build: ./docker/php
+        volumes:
+            - './:/var/www/html'
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+        user: '1000:1000'
+        ports:
+            - "81:81"
+        command: php -S 0.0.0.0:81 -t /var/www/html
+        networks:
+            - solomono
+
+    db:
+        image: mysql:8.0.12
+        container_name: '${APP_NAME}-db'
+        restart: unless-stopped
+        environment:
+            MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ROOT_HOST: "%"
+            MYSQL_DATABASE: '${DB_DATABASE}'
+            MYSQL_USER: '${DB_USERNAME}'
+            MYSQL_PASSWORD: '${DB_PASSWORD}'
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        ports:
+            - '${FORWARD_DB_PORT:-3307}:3306'
+        volumes:
+            - 'solomono:/var/lib/mysql'
+        networks:
+            - solomono
+
+    adminer:
+        image: adminer
+        container_name: '${APP_NAME}-adminer'
+        restart: always
+        ports:
+            - "8080:8080"
+        networks:
+            - solomono
+
+networks:
+    solomono:
+        driver: bridge
+
+volumes:
+    solomono:
+        driver: local
