@@ -126,12 +126,17 @@ if ($action == 'add') {
     
     $result = $mysqli->query($sql);
     
+    $rows = array();
+    
     if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        echo json_encode($row);
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        echo json_encode($rows);
     } else {
         echo "Ошибка выполнения запроса: " . $mysqli->error;
     }
+    
     $mysqli->close();
 }
 ?>

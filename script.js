@@ -113,15 +113,17 @@ $(document).ready(function () {
             success: function (data) {
                 var results = JSON.parse(data);
                 var tableBody = $('#result-list');
-                var row = '<tr>';
-                row += '<td>' + results.product_name + '</td>';
-                row += '<td>' + results.field1_name + '</td>';
-                row += '<td>' + results.field1_value + '</td>';
-                row += '<td>' + results.field2_name + '</td>';
-                row += '<td>' + results.field2_value + '</td>';
-                row += '</tr>';
-
-                tableBody.append(row);
+                for (var i = 0; i < results.length; i++) {
+                    var result = results[i];
+                    var row = '<tr>';
+                    row += '<td>' + result.product_name + '</td>';
+                    row += '<td>' + result.field1_name + '</td>';
+                    row += '<td>' + result.field1_value + '</td>';
+                    row += '<td>' + result.field2_name + '</td>';
+                    row += '<td>' + result.field2_value + '</td>';
+                    row += '</tr>';
+                    tableBody.append(row);
+                }
             }
         });
     });
